@@ -1,0 +1,168 @@
+/**
+ * Any CSS included here will be global. The classic template
+ * bundles Infima by default. Infima is a CSS framework designed to
+ * work well for content-centric websites.
+ */
+
+/* You can override the classic template styling here. */
+:root {
+  --ifm-color-primary: #da27e0; /* Pink */
+  --ifm-color-primary-dark: #c2185b;
+  --ifm-color-primary-darker: #880e4f;
+  --ifm-color-primary-darkest: #880e4f;
+  --ifm-color-primary-light: #ec407a;
+  --ifm-color-primary-lighter: #f06292;
+  --ifm-color-primary-lightest: #f8bbd0;
+  --ifm-color-secondary: #000000; /* Black */
+  --ifm-background-color: #ffffff;
+  --ifm-navbar-background-color: #000000; /* Black navbar */
+  --ifm-footer-background-color: #000000; /* Black footer */
+  --ifm-code-font-size: 95%;
+  --docusaurus-highlighted-code-line-bg: rgba(233, 30, 99, 0.3); /* Pink highlight */
+}
+
+/* For readability concerns, you should choose a lighter palette in dark mode. */
+[data-theme='dark'] {
+  --ifm-color-primary: #e91e63; /* Pink */
+  --ifm-color-primary-dark: #c2185b;
+  --ifm-color-primary-darker: #880e4f;
+  --ifm-color-primary-darkest: #880e4f;
+  --ifm-color-primary-light: #ec407a;
+  --ifm-color-primary-lighter: #f06292;
+  --ifm-color-primary-lightest: #f8bbd0;
+  --ifm-background-color: #000000; /* Black background in dark mode */
+  --ifm-navbar-background-color: #000000;
+  --ifm-footer-background-color: #000000;
+  --docusaurus-highlighted-code-line-bg: rgba(233, 30, 99, 0.3);
+}
+
+/* Navbar styling */
+.navbar {
+  background-color: var(--ifm-navbar-background-color);
+  color: white;
+}
+
+.navbar__title {
+  color: white;
+  font-weight: bold;
+}
+
+.navbar__link {
+  color: white;
+}
+
+.navbar__link:hover {
+  color: var(--ifm-color-primary-lighter);
+}
+
+/* Footer styling */
+.footer {
+  background-color: var(--ifm-footer-background-color);
+  color: white;
+}
+
+.footer__title {
+  color: var(--ifm-color-primary);
+}
+
+.footer__link-item {
+  color: white;
+}
+
+.footer__link-item:hover {
+  color: var(--ifm-color-primary-lighter);
+}
+
+/* Custom styling for textbook */
+.chapter-intro {
+  font-size: 1.2em;
+  line-height: 1.6;
+  margin-bottom: 2em;
+  border-left: 4px solid var(--ifm-color-primary);
+  padding-left: 1rem;
+}
+
+.learning-objectives {
+  background-color: #f8f9fa;
+  border-left: 4px solid var(--ifm-color-primary);
+  padding: 15px;
+  margin: 20px 0;
+  background-color: rgba(233, 30, 99, 0.1); /* Light pink background */
+}
+
+.learning-objectives ul {
+  margin-bottom: 0;
+}
+
+.code-examples {
+  margin: 1.5em 0;
+  border: 1px solid var(--ifm-color-primary-lightest);
+  border-radius: 4px;
+  padding: 1rem;
+}
+
+.diagram-placeholder {
+  text-align: center;
+  padding: 20px;
+  border: 1px dashed var(--ifm-color-primary);
+  margin: 20px 0;
+  font-style: italic;
+  color: #666;
+  background-color: rgba(233, 30, 99, 0.05);
+}
+
+/* Links styling */
+a {
+  color: var(--ifm-color-primary);
+}
+
+a:hover {
+  color: var(--ifm-color-primary-darker);
+}
+
+/* Buttons */
+.button {
+  background-color: var(--ifm-color-primary);
+  border-color: var(--ifm-color-primary);
+}
+
+.button:hover {
+  background-color: var(--ifm-color-primary-darker);
+  border-color: var(--ifm-color-primary-darker);
+}
+
+/* Sidebar */
+.menu {
+  background-color: #f8f9fa;
+}
+
+.menu__link--active {
+  background-color: var(--ifm-color-primary);
+  color: white;
+}
+
+/* Cards */
+.card {
+  border: 1px solid var(--ifm-color-primary-lightest);
+  border-radius: 8px;
+}
+
+.card__header {
+  background-color: var(--ifm-color-primary);
+  color: white;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Tables */
+.table-of-contents__link:hover,
+.table-of-contents__link--active {
+  color: var(--ifm-color-primary);
+}
+
+/* Code blocks */
+.docusaurus-highlight-code-line {
+  background-color: var(--docusaurus-highlighted-code-line-bg);
+  display: block;
+  margin: 0 calc(-1 * var(--ifm-pre-padding));
+  padding: 0 var(--ifm-pre-padding);
+}
