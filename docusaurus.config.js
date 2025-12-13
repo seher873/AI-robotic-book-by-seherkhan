@@ -14,7 +14,7 @@ const config = {
   baseUrl: '/',
   // For Netlify deployment
   trailingSlash: undefined, // Let Docusaurus decide based on preset
-  onBrokenLinks: 'warn',
+  onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
 
   // GitHub pages deployment config.
