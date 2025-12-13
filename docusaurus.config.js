@@ -8,18 +8,18 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-netlify-subdomain.netlify.app',
+  url: 'https://seher873.github.io', // Replace with your GitHub username
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/',
-  // For Netlify deployment
-  trailingSlash: undefined, // Let Docusaurus decide based on preset
-  onBrokenLinks: 'ignore',
+  baseUrl: '/physical-ai-textbook/', // GitHub pages serves pages at /<repository-name>/
+  // For GitHub Pages deployment
+  trailingSlash: true, // For GitHub Pages compatibility
+  onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'your-book-name', // Usually your GitHub org/user name.
+  organizationName: 'seher873', // Usually your GitHub org/user name.
   projectName: 'physical-ai-textbook', // Usually your repo name.
 
   onBrokenLinks: 'ignore',
@@ -43,7 +43,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/facebook/docusaurus/tree/main/packages/create-docusaurus/templates/shared/',
+            'https://github.com/seher873/physical-ai-textbook/edit/main/',
         },
         blog: false, // Disable blog if not needed
         theme: {
@@ -77,7 +77,7 @@ const config = {
             position: 'left',
           },
           {
-            href: 'https://github.com/your-book-name/physical-ai-textbook',
+            href: 'https://github.com/seher873/physical-ai-textbook',
             label: 'GitHub',
             position: 'right',
           },
@@ -125,7 +125,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/your-book-name/physical-ai-textbook',
+                href: 'https://github.com/seher873/physical-ai-textbook',
               },
             ],
           },
