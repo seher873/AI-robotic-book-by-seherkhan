@@ -11,7 +11,7 @@ const config = {
   url: 'https://seher873.github.io', // Replace with your GitHub username
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
-  baseUrl: '/My_AI_Book/', // GitHub pages serves pages at /<repository-name>/
+  baseUrl: '/seher_ai_book/', // GitHub pages serves pages at /<repository-name>/
   // For GitHub Pages deployment
   trailingSlash: true, // For GitHub Pages compatibility
   onBrokenLinks: 'throw',
@@ -20,7 +20,7 @@ const config = {
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
   organizationName: 'seher873', // Usually your GitHub org/user name.
-  projectName: 'My_AI_Book', // Usually your repo name.
+  projectName: 'seher_ai_book', // Usually your repo name.
 
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
@@ -43,7 +43,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/seher873/My_AI_Book/edit/main/',
+            'https://github.com/seher873/seher_ai_book/edit/main/',
         },
         blog: false, // Disable blog if not needed
         theme: {
@@ -77,7 +77,7 @@ const config = {
             position: 'left',
           },
           {
-            href: 'https://github.com/seher873/My_AI_Book',
+            href: 'https://github.com/seher873/seher_ai_book',
             label: 'GitHub',
             position: 'right',
           },
@@ -125,7 +125,7 @@ const config = {
             items: [
               {
                 label: 'GitHub',
-                href: 'https://github.com/seher873/My_AI_Book',
+                href: 'https://github.com/seher873/seher_ai_book',
               },
             ],
           },

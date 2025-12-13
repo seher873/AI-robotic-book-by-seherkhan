@@ -20,7 +20,7 @@ To run the textbook locally:
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/seher873/physical-ai-textbook.git
+   git clone https://github.com/seher873/seher_ai_book.git
    ```
 
 2. Navigate to the project directory:
