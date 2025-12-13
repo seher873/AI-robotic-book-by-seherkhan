@@ -8,10 +8,14 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-  url: 'https://your-book-name.github.io',
+  url: 'https://your-netlify-subdomain.netlify.app',
   // Set the /<baseUrl>/ pathname under which your site is served
   // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
+  // For Netlify deployment
+  trailingSlash: undefined, // Let Docusaurus decide based on preset
+  onBrokenLinks: 'warn',
+  onBrokenMarkdownLinks: 'warn',
 
   // GitHub pages deployment config.
   // If you aren't using GitHub pages, you don't need these.
