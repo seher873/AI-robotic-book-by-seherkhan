@@ -364,3 +364,8 @@ lldb -- ros2 run package_name node_name
 ## Summary
 
 This module explored advanced ROS2 concepts essential for developing production-ready robotic applications. From custom message definitions to lifecycle management and performance optimization, these techniques enable more robust and efficient robot software systems.
+
+## Related Resources
+
+- [Glossary of Terms](../glossary/index.md)
+- [Appendix B: Chatbot and RAG Technologies](../appendices/appendix-b-chatbot-rag.md)

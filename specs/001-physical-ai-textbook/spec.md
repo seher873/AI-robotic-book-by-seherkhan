@@ -651,21 +651,42 @@ Basic programming knowledge (Python/C++), introductory linear algebra, basic phy
 - **Computer Vision**: Field of AI focused on enabling computers to interpret and understand visual information
 - **Deep Learning**: Subset of machine learning using neural networks with multiple layers
 - **Forward Kinematics**: Computing end-effector position from joint angles
-- **Inverse Kinematics**: Computing joint angles from end-effector position
-- **Kinematics**: Study of motion without considering forces causing motion
-- **LiDAR**: Light Detection and Ranging - optical detection method
-- **Manipulator**: Robotic device designed to manipulate objects
-- **Mobile Robot**: Robot with the ability to move around in its environment
-- **Perception**: Process by which robots acquire information about their environment
-- **Path Planning**: Computational problem of determining optimal path between points
-- **Perception-Action Cycle**: Continuous loop of sensing, interpreting, and acting
-- **Robotics Middleware**: Software framework that provides services for robot applications
-- **ROS (Robot Operating System)**: Flexible framework for writing robot software
-- **SLAM (Simultaneous Localization and Mapping)**: Computational problem of constructing map while tracking position
-- **Simulation**: Imitation of real-world process or system over time
-- **Torque Control**: Controlling rotational force applied to joints
-- **Trajectory**: Path that a moving object follows through space as a function of time
-- **Unity ML-Agents**: Toolkit for creating and training intelligent agents in Unity
+
+## Clarifications
+
+### Session 2025-12-13
+
+- Q: What types of assessments should be included in the textbook? → A: Assessments should be both formative (ongoing) and summative (end-of-chapter)
+- Q: How should grading be handled? → A: Include both automated grading for objective questions and manual review for subjective/programming assignments
+- Q: What assessment format should be used? → A: Only multiple-choice questions
+- Q: How much time should students spend weekly? → A: 15-20 hours per week for advanced undergraduates and graduates
+- Q: What license should be used for educational content? → A: MIT License for educational content
+
+## Non-Goals
+
+### What This Textbook Does NOT Cover
+
+1. **Chatbot and Conversational AI**: While the book covers VLA models for physical systems, it does not explore pure conversational AI systems or chatbots without physical embodiment.
+
+2. **Retrieval-Augmented Generation (RAG)**: The book focuses on perception-action systems rather than information retrieval and generation systems.
+
+3. **Cloud Computing for Robotics**: Although connectivity is discussed, the emphasis is on local processing rather than cloud-based robotic systems.
+
+4. **Financial Trading or Business Analytics AI**: The content is strictly focused on physical AI systems, excluding applications in finance, marketing, or business intelligence.
+
+5. **Pure Computer Vision Applications**: While computer vision is covered as part of perception, standalone computer vision applications (like medical imaging, surveillance) are outside the scope.
+
+6. **Game AI**: Although simulation is covered, traditional game AI techniques (like finite state machines for NPCs) are not included.
+
+7. **Ethical AI in Non-Physical Systems**: Discussion of ethics is tied specifically to physical AI systems and embodied agents rather than broader AI ethics in abstract systems.
+
+8. **Pure Machine Learning Theory**: The book focuses on applied physical AI rather than theoretical foundations of machine learning algorithms.
+
+9. **Software-Only AI Applications**: Systems that operate purely in digital environments without physical manifestations are excluded.
+
+10. **IoT Without Actuators**: Pure Internet of Things applications without robotic control or physical interaction are not covered.
+
+By focusing narrowly on physical AI systems, the textbook ensures depth in relevant topics while avoiding distractions from related but different domains.
 
 ### Appendix B: Troubleshooting Guide
 - Common ROS2 installation and runtime issues
@@ -687,6 +708,16 @@ Basic programming knowledge (Python/C++), introductory linear algebra, basic phy
 - Calculus for control theory
 - Transformation matrices and quaternions
 - Optimization methods for planning
+
+## Clarifications
+
+### Session 2025-12-13
+
+- Q: What types of assessments should be included in the textbook? → A: Assessments should be both formative (ongoing) and summative (end-of-chapter)
+- Q: How should grading be handled? → A: Include both automated grading for objective questions and manual review for subjective/programming assignments
+- Q: What assessment format should be used? → A: Only multiple-choice questions
+- Q: How much time should students spend weekly? → A: 15-20 hours per week for advanced undergraduates and graduates
+- Q: What license should be used for educational content? → A: MIT License for educational content
 
 ## Non-Goals
 

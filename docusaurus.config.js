@@ -72,8 +72,39 @@ const config = {
             label: 'Textbook',
           },
           {
+            type: 'doc',
+            docId: 'resume',
+            position: 'left',
+            label: 'Resume',
+          },
+          {
             to: '/dashboard',
             label: 'Dashboard',
+            position: 'left',
+          },
+          {
+            to: '/docs/assessments',
+            label: 'Assessments',
+            position: 'left',
+          },
+          {
+            to: '/docs/labs',
+            label: 'Labs',
+            position: 'left',
+          },
+          {
+            to: '/docs/hardware-guidelines',
+            label: 'Hardware',
+            position: 'left',
+          },
+          {
+            to: '/docs/glossary',
+            label: 'Glossary',
+            position: 'left',
+          },
+          {
+            to: '/docs/appendices',
+            label: 'Appendices',
             position: 'left',
           },
           {

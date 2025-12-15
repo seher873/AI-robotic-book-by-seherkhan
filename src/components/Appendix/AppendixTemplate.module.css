@@ -1,0 +1,41 @@
+.appendixCard {
+  margin-bottom: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.headerBadges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.content {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.toggleButton {
+  margin: 1rem 0;
+}
+
+.section {
+  margin: 1.5rem 0;
+}
+
+.referenceItem {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+@media (max-width: 768px) {
+  .headerBadges {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .headerBadges .badge {
+    margin-bottom: 0.25rem;
+  }
+}

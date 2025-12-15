@@ -1,0 +1,11 @@
+.glossaryList {
+  margin: 1.5rem 0;
+}
+
+.glossaryList > div {
+  margin-bottom: 1.5rem;
+}
+
+.glossaryList > div:last-child {
+  margin-bottom: 0;
+}

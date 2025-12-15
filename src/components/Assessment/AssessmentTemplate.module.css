@@ -1,0 +1,80 @@
+.assessmentCard {
+  margin-bottom: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.headerBadges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.optionsContainer {
+  margin: 1rem 0;
+}
+
+.optionItem {
+  margin-bottom: 0.5rem;
+}
+
+.optionLabel {
+  display: flex;
+  align-items: center;
+  padding: 0.75rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.optionLabel:hover {
+  background-color: #f5f5f5;
+}
+
+.optionLabel.correctOption {
+  border: 2px solid #28a745;
+  background-color: #f8fff9;
+}
+
+.optionLabel.incorrectOption {
+  border: 2px solid #dc3545;
+  background-color: #fff8f8;
+}
+
+.optionInput {
+  margin-right: 0.5rem;
+}
+
+.optionText {
+  flex: 1;
+}
+
+.submitButton {
+  margin-top: 1rem;
+}
+
+.resetButton {
+  margin-top: 1rem;
+}
+
+.feedbackContainer {
+  margin-top: 1rem;
+}
+
+@media (max-width: 768px) {
+  .optionLabel {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .optionInput {
+    margin-bottom: 0.5rem;
+  }
+
+  .headerBadges {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}

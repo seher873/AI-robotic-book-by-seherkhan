@@ -14,7 +14,7 @@
   --ifm-color-primary-lighter: #f06292;
   --ifm-color-primary-lightest: #f8bbd0;
   --ifm-color-secondary: #000000; /* Black */
-  --ifm-background-color: #ffffff;
+  --ifm-background-color: #fc82dd;
   --ifm-navbar-background-color: #000000; /* Black navbar */
   --ifm-footer-background-color: #000000; /* Black footer */
   --ifm-code-font-size: 95%;
@@ -39,16 +39,16 @@
 /* Navbar styling */
 .navbar {
   background-color: var(--ifm-navbar-background-color);
-  color: white;
+  color: rgb(190, 116, 169);
 }
 
 .navbar__title {
-  color: white;
+  color: rgb(164, 99, 172);
   font-weight: bold;
 }
 
 .navbar__link {
-  color: white;
+  color: rgb(95, 90, 90);
 }
 
 .navbar__link:hover {
@@ -83,7 +83,7 @@
 }
 
 .learning-objectives {
-  background-color: #f8f9fa;
+  background-color: #e370d9;
   border-left: 4px solid var(--ifm-color-primary);
   padding: 15px;
   margin: 20px 0;

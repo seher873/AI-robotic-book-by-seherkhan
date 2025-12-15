@@ -1,0 +1,57 @@
+.navLink {
+  margin: 0.25rem;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.navLink:hover {
+  text-decoration: none;
+}
+
+.mainToGlossary {
+  border-color: #3498db;
+  color: #3498db;
+}
+
+.mainToGlossary:hover {
+  background-color: #e3f2fd;
+  border-color: #2980b9;
+}
+
+.mainToAppendix {
+  border-color: #9b59b6;
+  color: #9b59b6;
+}
+
+.mainToAppendix:hover {
+  background-color: #f3e5f5;
+  border-color: #8e44ad;
+}
+
+.glossaryToMain {
+  border-color: #2ecc71;
+  color: #2ecc71;
+}
+
+.glossaryToMain:hover {
+  background-color: #e8f5e9;
+  border-color: #27ae60;
+}
+
+.appendixToMain {
+  border-color: #e74c3c;
+  color: #e74c3c;
+}
+
+.appendixToMain:hover {
+  background-color: #ffebee;
+  border-color: #c0392b;
+}
+
+@media (max-width: 768px) {
+  .navLink {
+    display: block;
+    margin: 0.25rem 0;
+    width: 100%;
+  }
+}

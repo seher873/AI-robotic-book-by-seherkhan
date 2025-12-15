@@ -1,0 +1,10 @@
+.bookmarkButton {
+  margin: 0.25rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.bookmarkButton:hover {
+  opacity: 0.9;
+}

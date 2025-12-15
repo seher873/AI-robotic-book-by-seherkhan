@@ -1,0 +1,40 @@
+.labCard {
+  margin-bottom: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.headerInfo {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.section {
+  margin: 1.5rem 0;
+}
+
+.notebookLink {
+  display: inline-block;
+  margin-top: 0.5rem;
+}
+
+.stepsList {
+  padding-left: 1.2rem;
+}
+
+.stepsList li {
+  margin-bottom: 0.75rem;
+}
+
+@media (max-width: 768px) {
+  .headerInfo {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .headerInfo .badge {
+    margin-bottom: 0.25rem;
+  }
+}

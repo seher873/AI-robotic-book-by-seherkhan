@@ -40,6 +40,17 @@ To run the textbook locally:
 
 5. Open [http://localhost:3000](http://localhost:3000) to view the textbook in your browser.
 
+## Features
+
+The textbook includes the following features to enhance learning:
+
+- **Structured Content**: Organized by chapters and modules covering both theoretical and practical aspects
+- **Interactive Assessments**: Knowledge checks at the end of chapters
+- **Hands-on Labs**: Practical exercises with real-world robotics applications
+- **Glossary**: Comprehensive definitions of AI and robotics terminology
+- **Appendices**: Supplementary material for deeper exploration of advanced topics
+- **Hardware Guidelines**: Recommendations for computing requirements and setup
+
 ## Structure
 
 The textbook content is organized in the `docs/` directory with the following structure:
@@ -55,6 +66,7 @@ The textbook content is organized in the `docs/` directory with the following st
 - `ch9-ethics/` - Ethics and Social Implications
 - `modules/` - Technical deep-dive modules
 - `labs/` - Hands-on lab exercises
+- `glossary/` - Comprehensive glossary of AI and robotics terms
 - `appendices/` - Supplementary material
 
 ## Contributing

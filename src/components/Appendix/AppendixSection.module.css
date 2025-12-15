@@ -1,0 +1,46 @@
+.appendixSectionCard {
+  margin-bottom: 2rem;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.headerBadges {
+  display: flex;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.content {
+  margin: 1rem 0;
+  line-height: 1.6;
+}
+
+.section {
+  margin: 1.5rem 0;
+  padding-top: 1rem;
+  border-top: 1px solid #eee;
+}
+
+.referenceItem {
+  margin-bottom: 0.5rem;
+  padding: 0.25rem 0;
+}
+
+.tagsContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+  .headerBadges {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .headerBadges .badge {
+    margin-bottom: 0.25rem;
+  }
+}

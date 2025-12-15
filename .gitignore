@@ -185,3 +185,6 @@ Logs/
 *.asset.meta
 *.shader.meta
 *.xml.meta
+
+# Qwen settings
+.qwen/
