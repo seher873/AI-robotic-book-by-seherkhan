@@ -189,3 +189,4 @@ Logs/
 # Qwen settings
 .qwen/.venv/
 .venv/
+.qwen/
