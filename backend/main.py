@@ -1,103 +1,44 @@
 """
-RAG Chatbot Backend for Physical AI & Humanoid Robotics Textbook
+FastAPI Backend for Physical AI & Humanoid Robotics Textbook
+Provides RAG chatbot and authentication APIs
 """
-from fastapi import FastAPI, HTTPException, Request # type: ignore
-from fastapi.middleware.cors import CORSMiddleware # type: ignore
-from pydantic import BaseModel # pyright: ignore[reportMissingImports]
-from typing import Optional, Dict, Any
+from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import os
-import cohere # type: ignore
-import qdrant_client # type: ignore
-from qdrant_client.http import models # pyright: ignore[reportMissingImports]
-import openai # type: ignore
-from dotenv import load_dotenv # type: ignore
-import logging
-# Import auth routes
 import sys
-import os
-# Add the current directory to Python path to ensure local modules can be imported
+import logging
+
+# Add backend directory to Python path
 current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
+# Import rate limiter
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
+
+# Import services
+from services.rag_service import initialize_rag_services, get_cohere_client, get_qdrant_client, get_openai_client
+from utils.logger import setup_logger
+
+# Import routes
+from routes.chat import router as chat_router
+from routes.ingest import router as ingest_router
 from auth.main import init_auth_routes
-from slowapi import Limiter, _rate_limit_exceeded_handler # type: ignore
-from slowapi.util import get_remote_address # type: ignore
-from slowapi.errors import RateLimitExceeded # type: ignore
 
-# Load environment variables
-
-load_dotenv()
-
-# Configure logging
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
+# Setup logging
+logger = setup_logger()
 
 # Initialize rate limiter
 limiter = Limiter(key_func=get_remote_address)
 
-# Initialize services (will be configured later in startup event)
-cohere_client = None
-openai_client = None
-qdrant = None
-
-def initialize_services():
-    """Initialize external services with environment variables"""
-    global cohere_client, openai_client, qdrant
-
-    cohere_key = os.getenv("COHERE_API_KEY")
-    openrouter_key = os.getenv("OPENROUTER_API_KEY")
-    qdrant_url = os.getenv("QDRANT_URL")
-    qdrant_api_key = os.getenv("QDRANT_API_KEY")
-
-    if not cohere_key:
-        logger.error("COHERE_API_KEY missing - set in Space Secrets!")
-    else:
-        cohere_client = cohere.Client(cohere_key)
-        logger.info("✓ Cohere initialized")
-
-    if not openrouter_key:
-        logger.error("OPENROUTER_API_KEY missing - set in Space Secrets!")
-    else:
-        openai_client = openai.OpenAI(
-            api_key=openrouter_key,
-            base_url="https://openrouter.ai/api/v1",
-        )
-        logger.info("✓ OpenRouter initialized")
-
-    if not qdrant_url:
-        logger.error("QDRANT_URL missing - set in Space Secrets!")
-    elif not qdrant_api_key:
-        logger.warning("QDRANT_API_KEY not set")
-        qdrant = qdrant_client.QdrantClient(url=qdrant_url)
-        logger.info("✓ Qdrant initialized (no API key)")
-    else:
-        qdrant = qdrant_client.QdrantClient(
-            url=qdrant_url,
-            api_key=qdrant_api_key
-        )
-        logger.info("✓ Qdrant initialized")
-
-# RAG Architecture Diagram:
-#
-# User Query
-#     ↓
-# [Embedding Generation with Cohere]
-#     ↓
-# [Vector Search in Qdrant]
-#     ↓
-# [Context Retrieval]
-#     ↓
-# [Gemini 1.5 Flash Generation]
-#     ↓
-# RAG Response
-
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    """Initialize services on startup and cleanup on shutdown"""
+    """Initialize services on startup"""
     try:
-        initialize_services()
+        initialize_rag_services()
         logger.info("✓ All services initialized successfully")
     except Exception as e:
         logger.error(f"✗ Failed to initialize services: {e}")
@@ -107,13 +48,13 @@ async def lifespan(app: FastAPI):
 
 # Initialize FastAPI app
 app = FastAPI(
-    title="Physical AI Textbook RAG Chatbot",
-    description="RAG system for the Physical AI & Humanoid Robotics textbook",
+    title="Physical AI Textbook Backend",
+    description="RAG chatbot and authentication API for Physical AI & Humanoid Robotics textbook",
     version="1.0.0",
     lifespan=lifespan
 )
 
-# Add rate limiting
+# Add rate limiter to app state
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 
@@ -126,39 +67,53 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-# Initialize authentication routes
+# Include routers
+app.include_router(chat_router, prefix="/api", tags=["Chatbot"])
+app.include_router(ingest_router, prefix="/api", tags=["Ingestion"])
 init_auth_routes(app)
 
-# Constants
-COLLECTION_NAME = "seher_robotic_book_netlify_app"
-EMBEDDING_MODEL = "embed-english-v3.0"
-GENERATION_MODEL = os.getenv("OPENROUTER_MODEL", "google/gemini-flash-1.5")
-
-class ChatRequest(BaseModel):
-    query: str
-    max_results: Optional[int] = 5
-
-class ChatResponse(BaseModel):
-    query: str
-    response: str
-    sources: list[Dict[str, Any]]
-
-class Document(BaseModel):
-    id: str
-    content: str
-    title: Optional[str] = None
-    path: Optional[str] = None
 
 @app.get("/")
-def read_root():
-    return {"message": "Physical AI Textbook RAG Chatbot Backend"}
+async def read_root():
+    """Root endpoint with API information"""
+    return {
+        "message": "Physical AI Textbook Backend API",
+        "version": "1.0.0",
+        "endpoints": {
+            "health": "/health",
+            "chat": "/api/chat",
+            "ingest": "/api/ingest",
+            "auth": "/api/auth"
+        }
+    }
+
+
+@app.get("/health")
+async def health_check():
+    """Health check endpoint with service dependency status"""
+    cohere_client = get_cohere_client()
+    qdrant_client = get_qdrant_client()
+    openai_client = get_openai_client()
+    
+    services_status = {
+        "cohere": "up" if cohere_client is not None else "down",
+        "qdrant": "up" if qdrant_client is not None else "down",
+        "openrouter": "up" if openai_client is not None else "down"
+    }
+
+    all_up = all(status == "up" for status in services_status.values())
+
+    return {
+        "status": "healthy" if all_up else "unhealthy",
+        "service": "Physical AI Textbook Backend",
+        "version": "1.0.0",
+        "services": services_status
+    }
 
 
 @app.get("/users/{user_id}/tasks")
-def get_user_tasks(user_id: str, limit: int = 100, offset: int = 0):
+async def get_user_tasks(user_id: str, limit: int = 100, offset: int = 0):
     """Get tasks for a specific user"""
-    # This is a placeholder implementation - in a real app, this would query the database
-    # Return an empty list to prevent 404 errors for now
     return {
         "tasks": [],
         "total": 0,
@@ -168,201 +123,18 @@ def get_user_tasks(user_id: str, limit: int = 100, offset: int = 0):
 
 
 @app.get("/users/{user_id}/tasks/{task_id}")
-def get_user_task(user_id: str, task_id: str):
+async def get_user_task(user_id: str, task_id: str):
     """Get a specific task for a user"""
-    # Placeholder implementation
     return {"detail": "Task not found"}
 
 
 @app.post("/users/{user_id}/tasks")
-def create_user_task(user_id: str, request: Request):
+async def create_user_task(user_id: str, request: Request):
     """Create a task for a user"""
-    # Placeholder implementation
     return {"detail": "Task created successfully"}
 
-@app.post("/chat", response_model=ChatResponse)
-@limiter.limit("10/minute")
-async def chat(request: Request, chat_request: ChatRequest):
-    if cohere_client is None or qdrant is None or openai_client is None:
-        raise HTTPException(status_code=500, detail="Services not initialized")
-
-    try:
-        # Generate embedding for the query
-        query_response = cohere_client.embed(
-            texts=[chat_request.query],
-            model=EMBEDDING_MODEL,
-            input_type="search_query"
-        )
-        query_embedding = query_response.embeddings[0]
-
-        # Search for relevant documents in Qdrant - try different methods based on client version
-        try:
-            # Try the newer search_points method first
-            search_results = qdrant.search_points(
-                collection_name=COLLECTION_NAME,
-                vector=query_embedding,
-                limit=chat_request.max_results,
-                with_payload=True
-            )
-        except AttributeError:
-            # Fall back to the traditional search method if search_points is not available
-            search_results = qdrant.search(
-                collection_name=COLLECTION_NAME,
-                query_vector=query_embedding,
-                limit=chat_request.max_results,
-                with_payload=True
-            )
-
-        # Extract content from search results
-        relevant_contents = []
-        sources = []
-
-        for result in search_results:
-            # Handle different result formats depending on Qdrant client version
-            if hasattr(result, 'payload'):
-                # Newer Qdrant client format (ScoredPoint)
-                content = result.payload.get("content", "")
-                sources.append({
-                    "id": result.id,
-                    "title": result.payload.get("title", "Unknown"),
-                    "path": result.payload.get("path", "Unknown"),
-                    "score": result.score
-                })
-            else:
-                # Older format or dict format
-                content = result.get('payload', {}).get("content", "")
-                sources.append({
-                    "id": result.get('id', ''),
-                    "title": result.get('payload', {}).get("title", "Unknown"),
-                    "path": result.get('payload', {}).get("path", "Unknown"),
-                    "score": result.get('score', 0.0)
-                })
-            relevant_contents.append(content)
-        
-        # If no relevant content found, return appropriate response
-        if not relevant_contents:
-            return ChatResponse(
-                query=chat_request.query,
-                response="Not found in the book",
-                sources=[]
-            )
-
-        # Combine context for generation
-        context = "\n\n".join(relevant_contents)
-
-        # Create prompt for response generation
-        prompt = f"""
-        You are an expert AI professor specialized in the "Physical AI & Humanoid Robotics" textbook.
-        Use the following retrieved context to answer the student's question accurately.
-
-        Context:
-        {context}
-
-        Question: {chat_request.query}
-
-        Guidelines:
-        - Answer directly based on the context provided.
-        - If the exact answer isn't in the context but relates to Physical AI topics discussed, provide a helpful general answer based on your knowledge as a textbook assistant.
-        - Only say "I'm sorry, I couldn't find specific details on this in the textbook" if the question is completely unrelated to Robotics or Physical AI.
-
-        Answer:
-        """
-        
-        # Generate response using OpenRouter
-        response = openai_client.chat.completions.create(
-            model=GENERATION_MODEL,
-            messages=[
-                {"role": "system", "content": "You are an AI assistant for the Physical AI & Humanoid Robotics textbook. Answer questions based on the provided context. If the information is not available in the context, respond with 'Not found in the book'."},
-                {"role": "user", "content": prompt}
-            ],
-            temperature=0.7,
-            max_tokens=1000
-        )
-
-        # Extract the response text
-        response_text = response.choices[0].message.content
-
-        # Check if response indicates information is not in the book
-        if "Not found in the book" in response_text or response_text.strip() == "":
-            return ChatResponse(
-                query=chat_request.query,
-                response="Not found in the book",
-                sources=[]
-            )
-
-        return ChatResponse(
-            query=chat_request.query,
-            response=response_text,
-            sources=sources
-        )
-        
-    except Exception as e:
-        logger.error(f"Error processing chat request: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.post("/ingest")
-@limiter.limit("5/minute")
-async def ingest_documents(request: Request, documents: list[Document]):
-    if cohere_client is None or qdrant is None:
-        raise HTTPException(status_code=500, detail="Services not initialized")
-
-    try:
-        # Prepare documents for embedding
-        texts_to_embed = [doc.content for doc in documents]
-
-        # Generate embeddings using Cohere
-        embeddings_response = cohere_client.embed(
-            texts=texts_to_embed,
-            model=EMBEDDING_MODEL,
-            input_type="search_document"
-        )
-        
-        embeddings = embeddings_response.embeddings
-        
-        # Prepare points for Qdrant
-        points = []
-        for i, doc in enumerate(documents):
-            points.append(models.PointStruct(
-                id=doc.id,
-                vector=embeddings[i],
-                payload={
-                    "content": doc.content,
-                    "title": doc.title or "",
-                    "path": doc.path or ""
-                }
-            ))
-        
-        # Upsert points to Qdrant
-        qdrant.upsert(
-            collection_name=COLLECTION_NAME,
-            points=points
-        )
-        
-        return {"message": f"Successfully ingested {len(documents)} documents"}
-        
-    except Exception as e:
-        logger.error(f"Error ingesting documents: {e}")
-        raise HTTPException(status_code=500, detail=str(e))
-
-@app.get("/health")
-async def health_check():
-    """Health check endpoint with service dependency status"""
-    services_status = {
-        "database": "up" if cohere_client is not None else "down",
-        "qdrant": "up" if qdrant is not None else "down",
-        "openrouter": "up" if openai_client is not None else "down"
-    }
-
-
-    all_up = all(status == "up" for status in services_status.values())
-
-    return {
-        "status": "healthy" if all_up else "unhealthy",
-        "service": "RAG Chatbot Backend",
-        "version": "1.0.0",
-        "services": services_status
-    }
 
 if __name__ == "__main__":
-    import uvicorn # pyright: ignore[reportMissingImports]
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    import uvicorn
+    port = int(os.getenv("PORT", 7860))
+    uvicorn.run(app, host="0.0.0.0", port=port)
