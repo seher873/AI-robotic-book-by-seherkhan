@@ -1,0 +1,63 @@
+# Netlify Configuration for Physical AI Textbook Frontend
+# Documentation: https://docs.netlify.com/configure-builds/file-based-configuration/
+
+[build]
+  # Build command - run from frontend directory
+  command = "cd frontend && npm run build"
+
+  # Publish directory (Docusaurus outputs to build/)
+  publish = "frontend/build"
+
+[build.environment]
+  # Node.js version
+  NODE_VERSION = "20"
+
+# Redirect rules
+[[redirects]]
+  # SPA fallback - serve index.html for all unmatched routes
+  from = "/*"
+  to = "/index.html"
+  status = 200
+  force = false
+
+[[redirects]]
+  # API proxy to HuggingFace FastAPI Backend
+  from = "/api/*"
+  to = "https://sehrkhan873-robotic-text-book.hf.space/:splat"
+  status = 200
+  force = true
+  headers = {X-From = "Netlify"}
+
+# Headers for security and performance
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Security headers
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    X-XSS-Protection = "1; mode=block"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+
+    # Cache control
+    Cache-Control = "public, max-age=0, must-revalidate"
+
+[[headers]]
+  for = "/static/*"
+  [headers.values]
+    # Cache static assets for 1 year
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "*.woff2"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
