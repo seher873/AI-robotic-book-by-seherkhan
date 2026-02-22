@@ -48,34 +48,57 @@ const Chatbot = ({ isOpen, onClose, onToggle }) => {
     setIsLoading(true);
 
     try {
-      // Call backend API to get response via proxy
-      const response = await fetch(`/api/chat`, {
+      // Call Gradio backend API to get response
+      // Step 1: Get event ID
+      const initResponse = await fetch(`/gradio_api/call/greet`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          query: inputValue,
-          max_results: 5
+          data: [inputValue]  // Gradio expects data as array
         })
       });
 
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+      if (!initResponse.ok) {
+        throw new Error(`HTTP error! status: ${initResponse.status}`);
       }
 
-      const data = await response.json();
-
-      // Add bot response to chat
-      const botMessage = {
-        id: Date.now() + 1,
-        text: data.response,
-        sender: 'bot',
-        timestamp: new Date(),
-        sources: data.sources || []
-      };
-
-      setMessages(prev => [...prev, botMessage]);
+      const initData = await initResponse.json();
+      const eventId = initData.event_id;
+      
+      // Step 2: Listen for result via SSE
+      const eventSource = new EventSource(`/gradio_api/call/greet?event_id=${eventId}`);
+      
+      await new Promise((resolve, reject) => {
+        const timeout = setTimeout(() => {
+          eventSource.close();
+          reject(new Error('Request timeout'));
+        }, 30000); // 30 second timeout
+        
+        eventSource.onmessage = (event) => {
+          const result = JSON.parse(event.data);
+          if (result.data && result.data[0]) {
+            clearTimeout(timeout);
+            // Add bot response to chat
+            const botMessage = {
+              id: Date.now() + 1,
+              text: result.data[0],
+              sender: 'bot',
+              timestamp: new Date()
+            };
+            setMessages(prev => [...prev, botMessage]);
+            eventSource.close();
+            resolve();
+          }
+        };
+        eventSource.onerror = () => {
+          clearTimeout(timeout);
+          eventSource.close();
+          reject(new Error('Connection error'));
+        };
+      });
+      
     } catch (error) {
       const errorMsg = error?.message || String(error) || 'Unknown error';
       console.error('Error getting chat response:', errorMsg);
@@ -83,7 +106,7 @@ const Chatbot = ({ isOpen, onClose, onToggle }) => {
       // Add error message to chat
       const errorMessage = {
         id: Date.now() + 1,
-        text: "Sorry, I encountered an error processing your request. Please try again.",
+        text: "Sorry, I encountered an error. Please try again.",
         sender: 'bot',
         timestamp: new Date()
       };
