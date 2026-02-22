@@ -8,16 +8,14 @@ const config = {
   favicon: 'img/favicon.ico',
 
   // Set the production url of your site here
-    url: 'https://seher-robotic-book.netlify.app',
+  url: 'https://seher-robotic-book.netlify.app',
   // Set the /<baseUrl>/ pathname under which your site is served
-  // For GitHub pages deployment, it is often '/<projectName>/'
   baseUrl: '/',
-  // For GitHub Pages deployment
-  trailingSlash: true, // For GitHub Pages compatibility
-  // GitHub pages deployment config.
-  // If you aren't using GitHub pages, you don't need these.
-  organizationName: 'seher873', // Usually your GitHub org/user name.
-  projectName: 'seher_ai_book', // Usually your repo name.
+  // For Netlify deployment
+  trailingSlash: false,
+  // GitHub repository config
+  organizationName: 'seher873',
+  projectName: 'AI-robotic-book-by-seherkhan',
 
   onBrokenLinks: 'ignore',
   onBrokenMarkdownLinks: 'warn',
@@ -48,7 +46,7 @@ const config = {
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           editUrl:
-            'https://github.com/seher873/seher_ai_book/edit/main/',
+            'https://github.com/seher873/AI-robotic-book-by-seherkhan/edit/main/',
         },
         blog: false, // Disable blog if not needed
         theme: {
@@ -74,6 +72,10 @@ const config = {
         ],
       },
     ],
+  ],
+  // Add the Root module to wrap the entire app
+  clientModules: [
+    require.resolve('./src/Root.jsx'),
   ],
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
@@ -140,7 +142,7 @@ const config = {
             position: 'right',
           },
           {
-            href: 'https://github.com/seher873/seher_ai_book',
+            href: 'https://github.com/seher873/AI-robotic-book-by-seherkhan',
             label: 'GitHub',
             position: 'right',
           },

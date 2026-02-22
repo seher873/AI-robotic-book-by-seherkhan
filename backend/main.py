@@ -46,31 +46,38 @@ def initialize_services():
     """Initialize external services with environment variables"""
     global cohere_client, openai_client, qdrant
 
-    if not os.getenv("COHERE_API_KEY"):
-        raise RuntimeError("COHERE_API_KEY missing")
-    if not os.getenv("OPENROUTER_API_KEY"):
-        raise RuntimeError("OPENROUTER_API_KEY missing")
-    if not os.getenv("QDRANT_URL"):
-        raise RuntimeError("QDRANT_URL missing")
-    if not os.getenv("QDRANT_API_KEY"):
-        logger.warning("QDRANT_API_KEY not set - Qdrant functionality will be limited")
-        # Continue without API key (for local Qdrant or if using anonymous access)
-
-    cohere_client = cohere.Client(os.getenv("COHERE_API_KEY"))
-    openai_client = openai.OpenAI(
-        api_key=os.getenv("OPENROUTER_API_KEY"),
-        base_url="https://openrouter.ai/api/v1",
-    )
+    cohere_key = os.getenv("COHERE_API_KEY")
+    openrouter_key = os.getenv("OPENROUTER_API_KEY")
+    qdrant_url = os.getenv("QDRANT_URL")
     qdrant_api_key = os.getenv("QDRANT_API_KEY")
-    if qdrant_api_key:
-        qdrant = qdrant_client.QdrantClient(
-            url=os.getenv("QDRANT_URL"),
-            api_key=qdrant_api_key
+
+    if not cohere_key:
+        logger.error("COHERE_API_KEY missing - set in Space Secrets!")
+    else:
+        cohere_client = cohere.Client(cohere_key)
+        logger.info("✓ Cohere initialized")
+
+    if not openrouter_key:
+        logger.error("OPENROUTER_API_KEY missing - set in Space Secrets!")
+    else:
+        openai_client = openai.OpenAI(
+            api_key=openrouter_key,
+            base_url="https://openrouter.ai/api/v1",
         )
+        logger.info("✓ OpenRouter initialized")
+
+    if not qdrant_url:
+        logger.error("QDRANT_URL missing - set in Space Secrets!")
+    elif not qdrant_api_key:
+        logger.warning("QDRANT_API_KEY not set")
+        qdrant = qdrant_client.QdrantClient(url=qdrant_url)
+        logger.info("✓ Qdrant initialized (no API key)")
     else:
         qdrant = qdrant_client.QdrantClient(
-            url=os.getenv("QDRANT_URL")
+            url=qdrant_url,
+            api_key=qdrant_api_key
         )
+        logger.info("✓ Qdrant initialized")
 
 # RAG Architecture Diagram:
 #
