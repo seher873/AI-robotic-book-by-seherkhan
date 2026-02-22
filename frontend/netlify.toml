@@ -42,9 +42,9 @@
   force = false
 
 [[redirects]]
-  # API proxy to HuggingFace Backend
+  # API proxy to HuggingFace FastAPI Backend
   from = "/api/*"
-  to = "https://sehrkhan873-text-book.hf.space/:splat"
+  to = "https://sehrkhan873-robotic-text-book.hf.space/:splat"
   status = 200
   force = true
   headers = {X-From = "Netlify"}
